@@ -1,0 +1,2232 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>咖啡心语2 · 攻略 × 求解器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background:
+                radial-gradient(ellipse at top left, #5d4037 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, #3e2723 0%, transparent 50%),
+                linear-gradient(135deg, #2c1810 0%, #4e342e 100%);
+            min-height: 100vh;
+            color: #efebe9;
+            padding: 24px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(2px 2px at 20% 30%, rgba(255, 204, 128, 0.15), transparent),
+                radial-gradient(2px 2px at 60% 70%, rgba(255, 204, 128, 0.1), transparent),
+                radial-gradient(1px 1px at 50% 50%, rgba(255, 204, 128, 0.2), transparent),
+                radial-gradient(2px 2px at 80% 20%, rgba(255, 204, 128, 0.08), transparent);
+            background-size: 200px 200px, 300px 300px, 150px 150px, 250px 250px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.4em;
+            letter-spacing: 4px;
+            text-shadow:
+                0 2px 8px rgba(255, 143, 0, 0.3),
+                0 4px 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 4px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #ffcc80 0%, #ffb74d 50%, #ff8f00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 0.85em;
+            color: #bcaaa4;
+            margin-bottom: 16px;
+            letter-spacing: 2px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.06) 100%);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 16px;
+            padding: 18px 22px;
+            max-width: 720px;
+            margin: 0 auto 18px;
+            border: 1px solid rgba(255, 204, 128, 0.15);
+            box-shadow:
+                0 8px 32px rgba(0, 0, 0, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+            position: relative;
+            z-index: 1;
+        }
+
+        .param-group {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.25s;
+        }
+
+        .param-group:hover {
+            background: rgba(255, 204, 128, 0.05);
+            border-color: rgba(255, 204, 128, 0.2);
+        }
+
+        .param-label {
+            font-weight: 600;
+            font-size: 0.95em;
+            min-width: 48px;
+            color: #ffcc80;
+            letter-spacing: 1px;
+        }
+
+        .param-group input[type="range"] {
+            flex: 1;
+            min-width: 140px;
+            height: 8px;
+            accent-color: #ff8f00;
+            cursor: pointer;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.15);
+            outline: none;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .param-group input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #ffcc80 0%, #ff8f00 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(255, 143, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            transition: transform 0.15s;
+        }
+
+        .param-group input[type="range"]::-webkit-slider-thumb:hover,
+        .param-group input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        .param-group input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #ffcc80 0%, #ff8f00 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(255, 143, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            transition: transform 0.15s;
+        }
+
+        .range-val {
+            display: inline-block;
+            min-width: 64px;
+            text-align: center;
+            font-weight: 700;
+            color: #2c1810;
+            font-size: 0.85em;
+            padding: 4px 10px;
+            background: linear-gradient(135deg, #ffcc80 0%, #ffb74d 100%);
+            border-radius: 8px;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 6px rgba(255, 143, 0, 0.25);
+            white-space: nowrap;
+        }
+
+        .search-bar {
+            margin-bottom: 10px;
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 10px 16px;
+            border-radius: 14px;
+            border: 1.5px solid rgba(255, 204, 128, 0.2);
+            background: linear-gradient(135deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
+            color: #fff;
+            font-size: 1em;
+            outline: none;
+            transition: all 0.25s;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+            font-style: italic;
+            max-width: 720px;
+        }
+
+        .search-bar input:focus {
+            border-color: #ff8f00;
+            background: linear-gradient(135deg, rgba(255,255,255,0.16) 0%, rgba(255,204,128,0.08) 100%);
+            box-shadow:
+                inset 0 1px 3px rgba(0,0,0,0.2),
+                0 0 0 3px rgba(255, 143, 0, 0.15);
+        }
+
+        .toggle-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            margin-bottom: 8px;
+            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 204, 128, 0.12);
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .toggle-wrap span {
+            font-size: 1em;
+            color: #8d6e63;
+            transition: all 0.3s;
+            letter-spacing: 2px;
+        }
+
+        .toggle-wrap span.active {
+            color: #ffcc80;
+            font-weight: 700;
+            text-shadow: 0 0 12px rgba(255, 204, 128, 0.4);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 58px;
+            height: 30px;
+            cursor: pointer;
+        }
+
+        .toggle-switch input {
+            display: none;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            transition: 0.3s;
+            border: 1px solid rgba(255, 204, 128, 0.2);
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            left: 3px;
+            bottom: 2px;
+            background: linear-gradient(135deg, #d7ccc8 0%, #a1887f 100%);
+            border-radius: 50%;
+            transition: 0.3s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .toggle-switch input:checked+.toggle-slider {
+            background: rgba(255, 143, 0, 0.3);
+            border-color: rgba(255, 143, 0, 0.5);
+        }
+
+        .toggle-switch input:checked+.toggle-slider::before {
+            transform: translateX(26px);
+            background: linear-gradient(135deg, #ffcc80 0%, #ff8f00 100%);
+            box-shadow: 0 2px 8px rgba(255, 143, 0, 0.5);
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin: 28px 0 18px;
+            padding: 10px 18px;
+            border-left: 4px solid #ff8f00;
+            color: #ffcc80;
+            background: linear-gradient(90deg, rgba(255, 143, 0, 0.12) 0%, transparent 80%);
+            border-radius: 0 8px 8px 0;
+            letter-spacing: 3px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container {
+            display: block;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .container > div {
+            width: 100%;
+        }
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 14px;
+        }
+
+        .recipe-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+            border-radius: 14px;
+            padding: 18px 22px;
+            border: 1px solid rgba(255, 204, 128, 0.12);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .recipe-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent 0%, #ff8f00 50%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .recipe-card:hover {
+            background: linear-gradient(135deg, rgba(255, 204, 128, 0.12) 0%, rgba(255, 143, 0, 0.06) 100%);
+            transform: translateY(-4px);
+            border-color: rgba(255, 143, 0, 0.4);
+            box-shadow:
+                0 10px 28px rgba(255, 143, 0, 0.2),
+                0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .recipe-card:hover::before {
+            opacity: 1;
+        }
+
+        .recipe-name {
+            font-weight: 700;
+            font-size: 1.15em;
+            color: #ffd54f;
+            margin-bottom: 6px;
+            letter-spacing: 2px;
+            text-shadow: 0 1px 4px rgba(255, 193, 7, 0.2);
+        }
+
+        .recipe-info {
+            font-size: 1em;
+            color: #f5f5f5;
+            line-height: 1.3;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .stat-row {
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            padding-top: 6px;
+            border-top: 1px dashed rgba(255, 204, 128, 0.2);
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: #ffab91;
+            min-width: 36px;
+            letter-spacing: 1px;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .square {
+            display: inline-block;
+            border-radius: 4px;
+            margin: 2px;
+            transition: all 0.25s;
+        }
+
+        .solid {
+            background: linear-gradient(135deg, #ffcc80 0%, #ff8f00 100%);
+            border: 1px solid rgba(255, 143, 0, 0.6);
+            box-shadow: 0 1px 4px rgba(255, 143, 0, 0.3);
+        }
+
+        .hollow {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .empty-hint {
+            text-align: center;
+            padding: 60px 20px;
+            color: #8d6e63;
+            font-size: 1.1em;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 14px;
+            border: 1px dashed rgba(255, 204, 128, 0.2);
+            margin-top: 10px;
+        }
+
+        /* ===== 攻略视图 ===== */
+        .tab-bar {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            max-width: 720px;
+            margin: 0 auto 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tab-btn {
+            padding: 8px 28px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 204, 128, 0.2);
+            background: rgba(255, 255, 255, 0.06);
+            color: #bcaaa4;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            letter-spacing: 3px;
+            transition: all 0.25s;
+            font-family: inherit;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 204, 128, 0.12);
+            color: #ffcc80;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #ff8f00 0%, #f4511e 100%);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 14px rgba(255, 143, 0, 0.4);
+        }
+
+        .guide-intro {
+            max-width: 900px;
+            margin: 0 auto 16px;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, rgba(255, 143, 0, 0.10) 0%, rgba(255, 255, 255, 0.04) 100%);
+            border: 1px solid rgba(255, 204, 128, 0.18);
+            border-radius: 14px;
+            font-size: 0.92em;
+            line-height: 1.7;
+            color: #d7ccc8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .guide-intro b {
+            color: #ffcc80;
+        }
+
+        .progress-wrap {
+            max-width: 900px;
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-track {
+            flex: 1;
+            height: 10px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 204, 128, 0.15);
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #ffb74d 0%, #ff8f00 100%);
+            box-shadow: 0 0 10px rgba(255, 143, 0, 0.5);
+            transition: width 0.4s;
+        }
+
+        .progress-text {
+            font-size: 0.85em;
+            color: #ffcc80;
+            font-weight: 700;
+            letter-spacing: 1px;
+            white-space: nowrap;
+        }
+
+        .day-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            max-width: 900px;
+            margin: 0 auto 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .day-pill {
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 204, 128, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+            color: #d7ccc8;
+            cursor: pointer;
+            font-size: 0.88em;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .day-pill:hover {
+            border-color: rgba(255, 143, 0, 0.5);
+            color: #ffcc80;
+            transform: translateY(-1px);
+        }
+
+        .day-pill.active {
+            background: linear-gradient(135deg, #ff8f00 0%, #f4511e 100%);
+            color: #fff;
+            border-color: transparent;
+            font-weight: 700;
+            box-shadow: 0 3px 10px rgba(255, 143, 0, 0.4);
+        }
+
+        .day-pill.done:not(.active) {
+            border-color: rgba(102, 187, 106, 0.6);
+            color: #a5d6a7;
+        }
+
+        .day-pill.done:not(.active)::after {
+            content: ' ✓';
+        }
+
+        .day-tip {
+            max-width: 900px;
+            margin: 0 auto 14px;
+            padding: 10px 18px;
+            background: rgba(255, 204, 128, 0.07);
+            border-left: 4px solid #ffb74d;
+            border-radius: 0 10px 10px 0;
+            font-size: 0.9em;
+            line-height: 1.7;
+            color: #ffe0b2;
+            position: relative;
+            z-index: 1;
+        }
+
+        .day-trophy-banner {
+            max-width: 900px;
+            margin: 0 auto 14px;
+            padding: 10px 18px;
+            background: linear-gradient(90deg, rgba(255, 213, 79, 0.14) 0%, rgba(255, 255, 255, 0.03) 100%);
+            border-left: 4px solid #ffd54f;
+            border-radius: 0 10px 10px 0;
+            font-size: 0.95em;
+            line-height: 1.6;
+            color: #ffe082;
+            position: relative;
+            z-index: 1;
+        }
+
+        .order-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 14px;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .order-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+            border-radius: 14px;
+            padding: 16px 20px;
+            border: 1px solid rgba(255, 204, 128, 0.12);
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .order-card:hover {
+            border-color: rgba(255, 143, 0, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(255, 143, 0, 0.18);
+        }
+
+        .order-card.checked {
+            opacity: 0.55;
+            border-color: rgba(102, 187, 106, 0.4);
+        }
+
+        .order-card.checked .recipe-name {
+            text-decoration: line-through;
+            text-decoration-color: rgba(165, 214, 167, 0.7);
+        }
+
+        .order-head {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .order-check {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .order-check input {
+            width: 18px;
+            height: 18px;
+            accent-color: #66bb6a;
+            cursor: pointer;
+        }
+
+        .customer-tag {
+            padding: 3px 12px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(255, 204, 128, 0.2) 0%, rgba(255, 143, 0, 0.12) 100%);
+            border: 1px solid rgba(255, 204, 128, 0.3);
+            color: #ffe0b2;
+            font-size: 0.85em;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .order-search-btn {
+            margin-left: auto;
+            padding: 3px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 204, 128, 0.25);
+            background: rgba(255, 255, 255, 0.06);
+            color: #bcaaa4;
+            font-size: 0.78em;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            letter-spacing: 1px;
+        }
+
+        .order-search-btn:hover {
+            background: rgba(255, 143, 0, 0.25);
+            color: #ffe0b2;
+            border-color: rgba(255, 143, 0, 0.5);
+        }
+
+        .badge-row {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .trophy-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #ffd54f 0%, #ff8f00 100%);
+            color: #3e2723;
+            font-size: 0.8em;
+            font-weight: 700;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 6px rgba(255, 143, 0, 0.35);
+        }
+
+        .item-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 8px;
+            background: rgba(129, 199, 132, 0.15);
+            border: 1px solid rgba(129, 199, 132, 0.5);
+            color: #a5d6a7;
+            font-size: 0.8em;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .note-line {
+            margin-top: 6px;
+            font-size: 0.85em;
+            color: #bcaaa4;
+            line-height: 1.5;
+        }
+
+        /* ===== 路线导航 ===== */
+        .route-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            max-width: 900px;
+            margin: 0 auto 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .route-pill {
+            padding: 8px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 204, 128, 0.25);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
+            color: #d7ccc8;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.25s;
+            font-family: inherit;
+        }
+
+        .route-pill small {
+            display: block;
+            font-size: 0.72em;
+            font-weight: 400;
+            color: #8d6e63;
+            letter-spacing: 0;
+            margin-top: 2px;
+        }
+
+        .route-pill:hover {
+            border-color: rgba(255, 143, 0, 0.5);
+            color: #ffcc80;
+            transform: translateY(-1px);
+        }
+
+        .route-pill.active {
+            background: linear-gradient(135deg, #ff8f00 0%, #f4511e 100%);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 14px rgba(255, 143, 0, 0.4);
+        }
+
+        .route-pill.active small {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .route-pill.done:not(.active) {
+            border-color: rgba(102, 187, 106, 0.6);
+            color: #a5d6a7;
+        }
+
+        .route-pill.done:not(.active) small {
+            color: rgba(165, 214, 167, 0.7);
+        }
+
+        /* ===== 杂项清单 / 挑战模式 ===== */
+        .task-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
+            border-radius: 14px;
+            padding: 16px 20px;
+            border: 1px solid rgba(255, 204, 128, 0.12);
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            max-width: 900px;
+            margin: 0 auto 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .task-card.checked {
+            opacity: 0.55;
+            border-color: rgba(102, 187, 106, 0.4);
+        }
+
+        .task-card.checked .recipe-name {
+            text-decoration: line-through;
+            text-decoration-color: rgba(165, 214, 167, 0.7);
+        }
+
+        .task-card .note-line {
+            font-size: 0.95em;
+            color: #d7ccc8;
+        }
+
+        .challenge-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 22px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #ff8f00 0%, #f4511e 100%);
+            color: #fff;
+            font-size: 0.95em;
+            font-weight: 600;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.25s;
+            font-family: inherit;
+            box-shadow: 0 4px 14px rgba(255, 143, 0, 0.4);
+        }
+
+        .challenge-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 143, 0, 0.5);
+        }
+
+        .day-title-row {
+            max-width: 900px;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .day-title {
+            font-size: 1.6em;
+            font-weight: 700;
+            color: #ffcc80;
+            letter-spacing: 3px;
+            text-shadow: 0 2px 8px rgba(255, 143, 0, 0.3);
+        }
+
+        .day-count {
+            font-size: 0.85em;
+            color: #8d6e63;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>咖啡心语 2</h1>
+    <div class="subtitle">洛神花与蓝蝴蝶 · 白金攻略（全周目）× 挑战模式求解器</div>
+
+    <div class="tab-bar">
+        <button class="tab-btn active" id="tab-guide" onclick="switchTab('guide')">每日攻略</button>
+        <button class="tab-btn" id="tab-solver" onclick="switchTab('solver')">配方求解</button>
+    </div>
+
+    <!-- ===== 攻略视图 ===== -->
+    <div id="view-guide">
+        <div class="guide-intro">
+            <b>白金总览：</b>难度 3/10 · 用时 6-8 小时 · 需要 3 个周目 · 无可错过奖杯 · 无奖杯 bug。
+            请<b>严格按照攻略的饮品</b>操作，给错一杯都有可能错过结局；<b>交付道具</b>也是重中之重。
+            每个周目每天都记得给所有动态<b>点赞</b>并点开查看（与全 CG 收集有关）。
+        </div>
+        <div class="route-nav" id="route-nav"></div>
+        <div class="progress-wrap">
+            <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+            <span class="progress-text" id="progress-text">0 / 0</span>
+        </div>
+        <div class="day-nav" id="day-nav"></div>
+        <div id="day-panel"></div>
+    </div>
+
+    <!-- ===== 求解器视图 ===== -->
+    <div id="view-solver" style="display:none">
+        <div class="toggle-wrap">
+            <span id="label-orig" class="active">1，2代(温暖/清爽/甜味/苦味)</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="toggle-tokyo" onchange="toggleTokyo()">
+                <span class="toggle-slider"></span>
+            </label>
+            <span id="label-tokyo">东京（甜/酸/辛辣/苦）</span>
+        </div>
+
+        <form name="myForm" class="form-card" onreset="setTimeout(updateMatch, 0)">
+            <div class="param-group">
+                <span class="param-label" id="param-label-0">温暖</span>
+                <input type="range" name="warm" min="0" max="4" step="1" value="0" oninput="updateMatch()">
+                <span class="range-val" id="val-0">任意</span>
+            </div>
+            <div class="param-group">
+                <span class="param-label" id="param-label-1">清爽</span>
+                <input type="range" name="cool" min="0" max="4" step="1" value="0" oninput="updateMatch()">
+                <span class="range-val" id="val-1">任意</span>
+            </div>
+            <div class="param-group">
+                <span class="param-label" id="param-label-2">甜味</span>
+                <input type="range" name="sweet" min="0" max="4" step="1" value="0" oninput="updateMatch()">
+                <span class="range-val" id="val-2">任意</span>
+            </div>
+            <div class="param-group">
+                <span class="param-label" id="param-label-3">苦味</span>
+                <input type="range" name="bitter" min="0" max="4" step="1" value="0" oninput="updateMatch()">
+                <span class="range-val" id="val-3">任意</span>
+            </div>
+            <div>
+                说明：蝶豆花、洛神花为2代
+            </div>
+        </form>
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="搜索配方名称或原料..." oninput="onSearch()">
+        </div>
+        <div class="container">
+            <div id="section-target" style="display:none">
+                <div class="section-title">匹配配方</div>
+                <div id="target" class="recipe-grid"></div>
+            </div>
+            <div id="section-result">
+                <div class="section-title">所有配方</div>
+                <div id="result" class="recipe-grid"></div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // ==================== 配方数据（1、2代） ====================
+        const drinks = [
+            { "name": "黑色柠檬", "ingredients": ["咖啡", "咖啡", "柠檬"] },
+            { "name": "黑魔法", "ingredients": ["咖啡", "薄荷", "蜂蜜"] },
+            { "name": "拿铁咖啡", "ingredients": ["咖啡", "牛奶", "牛奶"] },
+            { "name": "卡布奇诺", "ingredients": ["咖啡", "咖啡", "牛奶"] },
+            { "name": "意式浓缩", "ingredients": ["咖啡", "咖啡", "咖啡"] },
+            { "name": "姜饼咖啡", "ingredients": ["咖啡", "姜", "肉桂"] },
+            { "name": "姜味拿铁", "ingredients": ["咖啡", "姜", "牛奶"] },
+            { "name": "印尼姜汁咖啡", "ingredients": ["咖啡", "咖啡", "姜"] },
+            { "name": "糖与香料", "ingredients": ["咖啡", "蜂蜜", "肉桂"] },
+            { "name": "蜂舞", "ingredients": ["咖啡", "蜂蜜", "牛奶"] },
+            { "name": "肉桂拿铁", "ingredients": ["咖啡", "牛奶", "肉桂"] },
+            { "name": "甜咖啡", "ingredients": ["咖啡", "咖啡", "蜂蜜"] },
+            { "name": "凯马达", "ingredients": ["咖啡", "蜂蜜", "柠檬"] },
+            { "name": "豆儿响叮当", "ingredients": ["咖啡", "咖啡", "肉桂"] },
+            { "name": "加拉喝的", "ingredients": ["红茶", "牛奶", "姜"] },
+            { "name": "印度奶茶", "ingredients": ["红茶", "姜", "肉桂"] },
+            { "name": "仲夏夜之梦", "ingredients": ["红茶", "柠檬", "蜂蜜"] },
+            { "name": "俄罗斯红茶", "ingredients": ["红茶", "柠檬", "肉桂"] },
+            { "name": "也门亚丁奶茶", "ingredients": ["红茶", "牛奶", "肉桂"] },
+            { "name": "拉茶", "ingredients": ["红茶", "红茶", "牛奶"] },
+            { "name": "咳嗽糖浆", "ingredients": ["绿茶", "柠檬", "蜂蜜"] },
+            { "name": "绿茶拿铁", "ingredients": ["绿茶", "牛奶", "牛奶"] },
+            { "name": "马拉喀什", "ingredients": ["绿茶", "薄荷", "薄荷"] },
+            { "name": "生姜玄米茶", "ingredients": ["绿茶", "绿茶", "姜"] },
+            { "name": "绿毛怪格林奇", "ingredients": ["绿茶", "姜", "肉桂"] },
+            { "name": "抹茶", "ingredients": ["绿茶", "绿茶", "绿茶"] },
+            { "name": "解酒茶", "ingredients": ["绿茶", "姜", "柠檬"] },
+            { "name": "五星！", "ingredients": ["绿茶", "蜂蜜", "牛奶"] },
+            { "name": "苦涩之心", "ingredients": ["巧克力", "姜", "肉桂"] },
+            { "name": "巧克力蜂蜜牛奶", "ingredients": ["巧克力", "蜂蜜", "牛奶"] },
+            { "name": "黑巧克力", "ingredients": ["巧克力", "巧克力", "巧克力"] },
+            { "name": "西班牙撒哈拉", "ingredients": ["巧克力", "牛奶", "姜"] },
+            { "name": "辣妹", "ingredients": ["巧克力", "牛奶", "肉桂"] },
+            { "name": "299.792.458", "ingredients": ["巧克力", "蜂蜜", "姜"] },
+            { "name": "午夜之后", "ingredients": ["巧克力", "蜂蜜", "薄荷"] },
+            { "name": "温柔乡", "ingredients": ["牛奶", "肉桂", "蜂蜜"] },
+            { "name": "薄荷醇香", "ingredients": ["牛奶", "薄荷", "柠檬"] },
+            { "name": "柠檬尼·斯尼科特", "ingredients": ["牛奶", "蜂蜜", "柠檬"] },
+            { "name": "银河", "ingredients": ["牛奶", "蜂蜜", "薄荷"] },
+            { "name": "STMJ", "ingredients": ["牛奶", "姜", "蜂蜜"] },
+            { "name": "蝶豆花茶", "ingredients": ["蝶豆花", "蝶豆花", "蝶豆花"] },
+            { "name": "星河薄荷茶", "ingredients": ["蝶豆花", "薄荷", "柠檬"] },
+            { "name": "梦中蓝", "ingredients": ["蝶豆花", "牛奶", "蜂蜜"] },
+            { "name": "阿库娅的安神茶", "ingredients": ["蝶豆花", "薄荷", "薄荷"] },
+            { "name": "蓝色闪电", "ingredients": ["蝶豆花", "姜", "姜"] },
+            { "name": "花房", "ingredients": ["蝶豆花", "蜂蜜", "薄荷"] },
+            { "name": "加拉的茶", "ingredients": ["蝶豆花", "牛奶", "姜"] },
+            { "name": "蓝色棉花糖", "ingredients": ["蝶豆花", "蜂蜜", "牛奶"] },
+            { "name": "洛神花茶", "ingredients": ["洛神花", "洛神花", "洛神花"] },
+            { "name": "比萨普", "ingredients": ["洛神花", "姜", "柠檬"] },
+            { "name": "忒贾黑罗塞拉", "ingredients": ["洛神花", "姜", "蜂蜜"] },
+            { "name": "甜心拿铁", "ingredients": ["洛神花", "牛奶", "蜂蜜"] },
+            { "name": "胭脂香", "ingredients": ["洛神花", "牛奶", "肉桂"] },
+            { "name": "佐波", "ingredients": ["洛神花", "姜", "姜"] },
+            { "name": "蓝莓洛神花馅饼", "ingredients": ["洛神花", "蜂蜜", "薄荷"] }
+        ];
+        // 原料数据
+        const ingredientData = {
+            base: [
+                ["咖啡", [3, 0, 0, 4]],
+                ["绿茶", [2, 0, 0, 4]],
+                ["红茶", [4, 2, 0, 3]],
+                ["巧克力", [0, 2, 2, 4]],
+                ["蝶豆花", [2, 2, 1, 3]],
+                ["洛神花", [0, 3, 2, 2]],
+                ["牛奶", [2, 3, 1, 0]]
+            ],
+            primary: [
+                ["姜", [3, 0, 0, 3]],
+                ["薄荷", [0, 4, 1, 2]],
+                ["柠檬", [0, 2, 0, 3]],
+                ["蜂蜜", [0, 0, 4, 0]],
+                ["肉桂", [3, 0, 3, 0]],
+                ["牛奶", [1, 2, 0, 0]]
+            ],
+            secondary: [
+                ["姜", [2, 0, 0, 1]],
+                ["薄荷", [0, 3, 0, 0]],
+                ["柠檬", [0, 1, 0, 2]],
+                ["蜂蜜", [0, 0, 3, 0]],
+                ["肉桂", [1, 0, 2, 0]],
+                ["牛奶", [0, 1, 0, 0]]
+            ],
+            otherPrimary: [
+                ["咖啡", [2, 0, 0, 3]],
+                ["绿茶", [1, 0, 0, 3]],
+                ["红茶", [3, 1, 0, 2]],
+                ["巧克力", [1, 1, 0, 3]],
+                ["蝶豆花", [1, 1, 0, 2]],
+                ["洛神花", [0, 2, 2, 1]]
+            ],
+            otherSecondary: [
+                ["咖啡", [1, 0, 0, 2]],
+                ["绿茶", [0, 0, 0, 2]],
+                ["红茶", [2, 0, 0, 1]],
+                ["巧克力", [0, 0, 0, 2]],
+                ["蝶豆花", [0, 0, 0, 1]],
+                ["洛神花", [0, 1, 0, 0]]
+            ]
+        };
+
+        // 将原料分成名称和参数两个数组
+        const splitIngredients = (ingredients) => {
+            const names = [];
+            const params = [];
+            for (let i = 0; i < ingredients.length; i++) {
+                names.push(ingredients[i][0]);
+                params.push(ingredients[i][1]);
+            }
+            return [names, params];
+        };
+
+        // ==================== 东京篇数据 ====================
+        const drinksTokyo = [
+            { "name": "阿芙佳朵", "ingredients": ["咖啡", "咖啡", "冰淇淋"], "type": "热饮" },
+            { "name": "蜂舞", "ingredients": ["咖啡", "蜂蜜", "豆浆"], "type": "热饮" },
+            { "name": "黑魔法", "ingredients": ["咖啡", "薄荷", "蜂蜜"], "type": "热饮" },
+            { "name": "拿铁咖啡", "ingredients": ["咖啡", "豆浆", "豆浆"], "type": "热饮" },
+            { "name": "卡布奇诺", "ingredients": ["咖啡", "咖啡", "豆浆"], "type": "热饮" },
+            { "name": "咖啡漂浮饮", "ingredients": ["咖啡", "咖啡", "冰淇淋"], "type": "冷饮" },
+            { "name": "意式浓缩", "ingredients": ["咖啡", "咖啡", "咖啡"], "type": "热饮" },
+            { "name": "姜味拿铁", "ingredients": ["咖啡", "姜", "豆浆"], "type": "热饮" },
+            { "name": "冰欧蕾", "ingredients": ["咖啡", "豆浆", "豆浆"], "type": "冷饮" },
+            { "name": "冰姜咖啡", "ingredients": ["咖啡", "咖啡", "姜"], "type": "冷饮" },
+            { "name": "印尼姜汁咖啡", "ingredients": ["咖啡", "咖啡", "姜"], "type": "热饮" },
+            { "name": "诚之芭菲", "ingredients": ["咖啡", "荔枝", "冰淇淋"], "type": "冷饮" },
+            { "name": "甜咖啡", "ingredients": ["咖啡", "咖啡", "蜂蜜"], "type": "热饮" },
+            { "name": "维也纳咖啡", "ingredients": ["咖啡", "豆浆", "鲜奶油"], "type": "热饮" },
+            { "name": "加拉喝的", "ingredients": ["红茶", "豆浆", "姜"], "type": "热饮" },
+            { "name": "热柚蜜", "ingredients": ["红茶", "柚子", "蜂蜜"], "type": "热饮" },
+            { "name": "冰薄荷茶", "ingredients": ["红茶", "红茶", "薄荷"], "type": "冷饮" },
+            { "name": "冰红茶", "ingredients": ["红茶", "红茶", "红茶"], "type": "冷饮" },
+            { "name": "冰柚子茶", "ingredients": ["红茶", "红茶", "柚子"], "type": "冷饮" },
+            { "name": "荔枝基里茶", "ingredients": ["红茶", "豆浆", "荔枝"], "type": "热饮" },
+            { "name": "皇家奶茶", "ingredients": ["红茶", "豆浆", "豆浆"], "type": "热饮" },
+            { "name": "富士夕照", "ingredients": ["红茶", "芒果", "冰淇淋"], "type": "冷饮" },
+            { "name": "拉茶", "ingredients": ["红茶", "红茶", "豆浆"], "type": "热饮" },
+            { "name": "热带水果茶", "ingredients": ["红茶", "芒果", "荔枝"], "type": "冷饮" },
+            { "name": "柚蜜清凉饮", "ingredients": ["红茶", "柚子", "蜂蜜"], "type": "冷饮" },
+            { "name": "五星", "ingredients": ["绿茶", "蜂蜜", "豆浆"], "type": "热饮" },
+            { "name": "抹茶拿铁", "ingredients": ["绿茶", "豆浆", "豆浆"], "type": "热饮" },
+            { "name": "冷抹茶", "ingredients": ["绿茶", "绿茶", "绿茶"], "type": "冷饮" },
+            { "name": "马拉喀什", "ingredients": ["绿茶", "薄荷", "薄荷"], "type": "热饮" },
+            { "name": "抹茶", "ingredients": ["绿茶", "绿茶", "绿茶"], "type": "热饮" },
+            { "name": "抹茶芒果拿铁", "ingredients": ["绿茶", "豆浆", "芒果"], "type": "冷饮" },
+            { "name": "生姜玄米茶", "ingredients": ["绿茶", "绿茶", "姜"], "type": "热饮" },
+            { "name": "雪之森", "ingredients": ["绿茶", "荔枝", "冰淇淋"], "type": "冷饮" },
+            { "name": "柚香焙茶莫希托", "ingredients": ["焙茶", "柚子", "薄荷"], "type": "冷饮" },
+            { "name": "日式姜糖饮", "ingredients": ["焙茶", "姜", "蜂蜜"], "type": "冷饮" },
+            { "name": "焙茶", "ingredients": ["焙茶", "焙茶", "焙茶"], "type": "热饮" },
+            { "name": "冰焙茶", "ingredients": ["焙茶", "焙茶", "焙茶"], "type": "冷饮" },
+            { "name": "芒果梅尔芭", "ingredients": ["焙茶", "芒果", "冰淇淋"], "type": "冷饮" },
+            { "name": "柚子茶", "ingredients": ["焙茶", "柚子", "蜂蜜"], "type": "热饮" },
+            { "name": "299.792.458", "ingredients": ["巧克力", "蜂蜜", "姜"], "type": "热饮" },
+            { "name": "午夜之后", "ingredients": ["巧克力", "蜂蜜", "薄荷"], "type": "热饮" },
+            { "name": "香冰可可", "ingredients": ["巧克力", "姜", "冰淇淋"], "type": "冷饮" },
+            { "name": "巧蜜豆可可", "ingredients": ["巧克力", "蜂蜜", "豆浆"], "type": "热饮" },
+            { "name": "黑巧克力", "ingredients": ["巧克力", "巧克力", "巧克力"], "type": "热饮" },
+            { "name": "薄荷巧克力拿铁", "ingredients": ["巧克力", "豆浆", "薄荷"], "type": "热饮" },
+            { "name": "薄荷震撼", "ingredients": ["巧克力", "薄荷", "薄荷"], "type": "冷饮" },
+            { "name": "西班牙撒哈拉", "ingredients": ["巧克力", "豆浆", "姜"], "type": "热饮" },
+            { "name": "法式薄荷奶", "ingredients": ["豆浆", "薄荷", "薄荷"], "type": "热饮" },
+            { "name": "芒果欧蕾", "ingredients": ["豆浆", "芒果", "豆浆"], "type": "冷饮" },
+            { "name": "银河", "ingredients": ["豆浆", "蜂蜜", "薄荷"], "type": "热饮" },
+            { "name": "薄荷奶香饮", "ingredients": ["豆浆", "豆浆", "薄荷"], "type": "热饮" },
+            { "name": "晚安时光", "ingredients": ["豆浆", "芒果", "蜂蜜"], "type": "热饮" },
+            { "name": "粉红小艇", "ingredients": ["豆浆", "荔枝", "冰淇淋"], "type": "冷饮" },
+            { "name": "STMJ", "ingredients": ["豆浆", "姜", "蜂蜜"], "type": "热饮" }
+        ];
+
+        //东京 配料风味数据 - 格式：名称，[甜, 酸, 辛辣, 苦]
+        const ingredientDataTokyo = {
+            base: [
+                ["咖啡", [0, 2, 0, 4]],
+                ["红茶", [0, 0, 1, 3]],
+                ["绿茶", [0, 1, 0, 3]],
+                ["焙茶", [2, 0, 0, 2]],
+                ["巧克力", [2, 0, 1, 4]],
+                ["豆浆", [1, 0, 0, 0]]
+            ],
+            primary: [
+                ["咖啡", [0, 1, 0, 3]],
+                ["红茶", [0, 0, 0, 2]],
+                ["绿茶", [0, 1, 0, 2]],
+                ["焙茶", [1, 0, 0, 1]],
+                ["巧克力", [1, 0, 0, 3]],
+                ["豆浆", [1, 0, 0, 0]],
+
+                ["柚子", [1, 3, 0, 1]],
+                ["姜", [1, 0, 4, 2]],
+                ["蜂蜜", [4, 0, 1, 0]],
+                ["薄荷", [2, 0, 0, 1]],
+                ["芒果", [3, 1, 0, 0]],
+                ["荔枝", [2, 1, 0, 0]]
+            ],
+            secondary: [
+                ["咖啡", [0, 1, 0, 3]],
+                ["红茶", [0, 0, 0, 2]],
+                ["绿茶", [0, 1, 0, 2]],
+                ["焙茶", [1, 0, 0, 1]],
+                ["巧克力", [1, 0, 0, 2]],
+                ["豆浆", [1, 0, 0, 0]],
+
+                ["柚子", [0, 2, 0, 0]],
+                ["姜", [1, 0, 4, 2]],
+                ["蜂蜜", [3, 0, 0, 0]],
+                ["薄荷", [1, 0, 0, 0]],
+                ["芒果", [3, 1, 0, 0]],
+                ["荔枝", [2, 1, 0, 0]],
+
+                ["冰淇淋", [4, 0, 0, 0]],
+                ["鲜奶油", [4, 0, 0, 0]]
+            ]
+        };
+        // ==================== 攻略数据（来源：psnine.com/topic/37329） ====================
+        // 一周目 · 全好结局
+        const route1Days = [
+            {
+                date: '9月19日',
+                tips: [
+                    '每天记得给所有动态点赞并点开查看（与全CG收集有关）；有的动态会在当天聊天时更新，左下角有未读提示就都看一眼',
+                    '和前作一样有倒25杯饮品的奖杯：在给黎翁娜上饮料之前用光5次机会'
+                ],
+                orders: [
+                    { customer: '若尔日', drink: '洛神花茶', ingredients: ['洛神花', '洛神花', '洛神花'], item: '芙蕾雅的明信片' },
+                    { customer: '卢卡斯', drink: '抹茶', ingredients: ['绿茶', '绿茶', '绿茶'] },
+                    { customer: '黎翁娜', drink: '蝶豆花拿铁', ingredients: ['蝶豆花', '牛奶', '牛奶'], note: '拉花' }
+                ]
+            },
+            {
+                date: '9月20日',
+                tips: ['点赞、倒饮；第二天调出默特尔和/或阿库娅期望的饮品'],
+                orders: [
+                    { customer: '卢卡斯', drink: '蜂舞', ingredients: ['咖啡', '蜂蜜', '牛奶'] },
+                    { customer: '默特尔', drink: '也门亚丁奶茶', ingredients: ['红茶', '牛奶', '肉桂'] },
+                    { customer: '阿库娅', drink: '阿库娅的安神茶', ingredients: ['蝶豆花', '薄荷', '薄荷'], trophy: '温暖人心', note: '成功调和阿库娅和默特尔' }
+                ]
+            },
+            {
+                date: '9月21日',
+                tips: ['点赞、倒饮'],
+                orders: [
+                    { customer: '露亚', drink: '胭脂香', ingredients: ['洛神花', '牛奶', '肉桂'] },
+                    { customer: '阿曼达', drink: '蓝色闪电', ingredients: ['蝶豆花', '姜', '姜'] },
+                    { customer: '希尔法', drink: '花房', ingredients: ['蝶豆花', '蜂蜜', '薄荷'] }
+                ]
+            },
+            {
+                date: '9月22日',
+                tips: ['点赞、倒饮'],
+                orders: [
+                    { customer: '瑞秋', drink: '梦中蓝', ingredients: ['蝶豆花', '牛奶', '蜂蜜'] },
+                    { customer: '黎翁娜', drink: '梦中蓝', ingredients: ['蝶豆花', '牛奶', '蜂蜜'], item: '卢卡斯的联系方式' },
+                    { customer: '加拉', drink: '加拉喝的', ingredients: ['红茶', '牛奶', '姜'], item: '指尖陀螺', note: '把指尖陀螺给加拉' }
+                ]
+            },
+            {
+                date: '9月23日',
+                tips: ['点赞、倒饮，今天应该能倒够25杯了'],
+                orders: [
+                    { customer: '若尔日', drink: '甜咖啡', ingredients: ['咖啡', '咖啡', '蜂蜜'], item: '打火机' },
+                    { customer: '海德', drink: '甜心拿铁', ingredients: ['洛神花', '牛奶', '蜂蜜'], item: '门卡' },
+                    { customer: '卢卡斯', drink: '肉桂拿铁', ingredients: ['咖啡', '牛奶', '肉桂'], trophy: '好评', note: '给卢卡斯上完饮料后获得；准备满足卢卡斯每次的要求' }
+                ]
+            },
+            {
+                date: '9月24日',
+                tips: ['记得点赞，看报纸的时候获得'],
+                orders: [
+                    { customer: '露亚', drink: '豆儿响叮当', ingredients: ['咖啡', '咖啡', '肉桂'] },
+                    { customer: '海德', drink: '佐波', ingredients: ['洛神花', '姜', '姜'], trophy: '红如血', note: '为海德调出他爱喝的洛神花饮品' },
+                    { customer: '贝里斯', drink: '巧克力蜂蜜牛奶', ingredients: ['巧克力', '蜂蜜', '牛奶'] }
+                ]
+            },
+            {
+                date: '9月25日',
+                tips: [],
+                orders: [
+                    { customer: '希尔法', drink: '黑色柠檬', ingredients: ['咖啡', '咖啡', '柠檬'], item: '特工的身份证' },
+                    { customer: '阿曼达 + 希尔法', drink: '蜂蜜巧克力', ingredients: ['巧克力', '蜂蜜', '蜂蜜'], trophy: '扒窃高手', note: '偷走特务身上的工作卡，把身份证交给希尔法' }
+                ]
+            },
+            {
+                date: '9月26日',
+                tips: ['跟哈拉对话时获得'],
+                orders: [
+                    { customer: '加拉', drink: 'STMJ', ingredients: ['牛奶', '姜', '蜂蜜'] },
+                    { customer: '黎翁娜', drink: '俄罗斯红茶', ingredients: ['红茶', '柠檬', '肉桂'] },
+                    { customer: '若尔日', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'], item: '打火机' },
+                    { customer: '卢卡斯', drink: '西班牙撒哈拉', ingredients: ['巧克力', '牛奶', '姜'] },
+                    { customer: '若尔日', drink: '忒贾黑罗塞拉', ingredients: ['洛神花', '姜', '蜂蜜'] },
+                    { customer: '卢卡斯 + 黎翁娜', drink: '星河薄荷茶', ingredients: ['蝶豆花', '薄荷', '柠檬'] }
+                ]
+            },
+            {
+                date: '9月27日',
+                tips: [],
+                orders: [
+                    { customer: '加拉', drink: '加拉的茶', ingredients: ['蝶豆花', '牛奶', '姜'] },
+                    { customer: '海德', drink: '佐波', ingredients: ['洛神花', '姜', '姜'] },
+                    { customer: '露亚', drink: '咳嗽糖浆', ingredients: ['绿茶', '柠檬', '蜂蜜'] }
+                ]
+            },
+            {
+                date: '9月28日',
+                tips: ['麦奎因出场获得'],
+                orders: [
+                    { customer: '若尔日', drink: '凯马达', ingredients: ['咖啡', '蜂蜜', '柠檬'], item: '打火机' },
+                    { customer: '黎翁娜', drink: '仲夏夜之梦', ingredients: ['红茶', '柠檬', '蜂蜜'] }
+                ]
+            },
+            {
+                date: '9月29日',
+                tips: [],
+                dayTrophy: { name: '贵宾', desc: '当日获得：受邀参加露亚和贝里斯的婚礼' },
+                orders: [
+                    { customer: '贝里斯', drink: '甜心拿铁', ingredients: ['洛神花', '牛奶', '蜂蜜'] },
+                    { customer: '阿曼达', drink: '柠檬薄荷绿茶', ingredients: ['绿茶', '柠檬', '薄荷'] },
+                    { customer: '希尔法', drink: '299.792.458', ingredients: ['巧克力', '蜂蜜', '姜'] }
+                ]
+            },
+            {
+                date: '9月30日',
+                tips: [],
+                orders: [
+                    { customer: '阿库娅', drink: '印度奶茶', ingredients: ['红茶', '姜', '肉桂'] },
+                    { customer: '亨德利', drink: 'STMJ', ingredients: ['牛奶', '姜', '蜂蜜'] },
+                    { customer: '加拉', drink: '忒贾黑罗塞拉', ingredients: ['洛神花', '姜', '蜂蜜'], item: '婚礼请帖' },
+                    { customer: '若尔日', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'], item: '黎翁娜的联系方式' }
+                ]
+            },
+            {
+                date: '10月1日',
+                tips: [],
+                dayTrophy: { name: '惆怅的夜', desc: '9月22日给了梦中蓝后，在瑞秋需要灵感时给她调出「梦中蓝」' },
+                orders: [
+                    { customer: '瑞秋', drink: '牛奶', ingredients: ['牛奶', '牛奶', '牛奶'] },
+                    { customer: '黎翁娜', drink: '蓝莓洛神花馅饼', ingredients: ['洛神花', '蜂蜜', '薄荷'] }
+                ]
+            },
+            {
+                date: '10月2日',
+                tips: [],
+                orders: [
+                    { customer: '贝里斯 + 露亚 + 海德 + 加拉', drink: '午夜之后', ingredients: ['巧克力', '蜂蜜', '薄荷'], trophy: '新婚', note: '剧情获得：完成露亚和贝里斯的好故事线' }
+                ]
+            },
+            {
+                date: '10月3日',
+                tips: ['ED后给空无一人的座位随便调一杯饮料（这里还没达到隐藏条件），通关获得'],
+                dayTrophy: { name: '铭记', desc: '单个流程同时完成若尔日、卢卡斯、黎翁娜的最佳故事线' },
+                orders: [
+                    { customer: '若尔日', drink: '洛神花茶', ingredients: ['洛神花', '洛神花', '洛神花'] },
+                    { customer: '卢卡斯', drink: '蝶豆花拿铁', ingredients: ['蝶豆花', '牛奶', '牛奶'], note: '拉花' },
+                    { customer: '黎翁娜', drink: '蜂蜜咖啡', ingredients: ['咖啡', '蜂蜜', '蜂蜜'] },
+                    { customer: '卢卡斯', drink: '五星', ingredients: ['绿茶', '蜂蜜', '牛奶'], trophy: '五星', note: '接受卢卡斯的测试，调出「五星」饮品' },
+                    { customer: '芙蕾雅', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            }
+        ];
+
+        // 二周目 · 全坏结局
+        const route2Days = [
+            {
+                date: '9月19日',
+                tips: ['这周目全给错误的饮料；除了一开始芙蕾雅的信强制交付以外，不要交付任何物品'],
+                orders: [
+                    { customer: '若尔日', drink: '牛奶', ingredients: ['牛奶', '牛奶', '牛奶'], item: '芙蕾雅的明信片', note: '强制交付' },
+                    { customer: '卢卡斯', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '黎翁娜', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            },
+            {
+                date: '9月20日',
+                tips: [],
+                orders: [
+                    { customer: '卢卡斯', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '默特尔', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '默特尔', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            },
+            {
+                date: '9月21日',
+                tips: [],
+                orders: [
+                    { customer: '露亚', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '阿曼达', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '希尔法', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            },
+            {
+                date: '9月22日',
+                tips: [],
+                dayTrophy: { name: '消失', desc: '向黎翁娜提供糟糕的服务，最后令她再也不来光顾（当日黎翁娜会离开）' },
+                orders: [
+                    { customer: '瑞秋', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '黎翁娜', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '加拉', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            },
+            {
+                date: '9月23日',
+                tips: [],
+                dayTrophy: { name: '差评', desc: '卢卡斯前三次来店给他调错饮品' },
+                orders: [
+                    { customer: '若尔日', drink: '牛奶', ingredients: ['牛奶', '牛奶', '牛奶'] },
+                    { customer: '海德', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '卢卡斯', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            },
+            {
+                date: '9月24日',
+                tips: [],
+                orders: [
+                    { customer: '露亚', drink: '牛奶', ingredients: ['牛奶', '牛奶', '牛奶'] },
+                    { customer: '海德', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '贝里斯', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            },
+            {
+                date: '9月25日',
+                tips: [],
+                orders: [
+                    { customer: '希尔法', drink: '牛奶', ingredients: ['牛奶', '牛奶', '牛奶'] },
+                    { customer: '阿曼达 + 希尔法', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            },
+            {
+                date: '9月26日',
+                tips: [],
+                orders: [
+                    { customer: '加拉', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '若尔日', drink: '牛奶', ingredients: ['牛奶', '牛奶', '牛奶'] }
+                ]
+            },
+            {
+                date: '9月27日',
+                tips: [],
+                orders: [
+                    { customer: '加拉', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '海德', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '露亚', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            },
+            {
+                date: '9月28日',
+                tips: ['记得看动态，有条卢卡斯的CG'],
+                orders: [
+                    { customer: '若尔日', drink: '牛奶', ingredients: ['牛奶', '牛奶', '牛奶'] },
+                    { customer: '卢卡斯', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            },
+            {
+                date: '9月29日',
+                tips: ['当日有奖杯解锁（源攻略此处为截图，未标注名称）'],
+                orders: [
+                    { customer: '贝里斯', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '希尔法', drink: '牛奶', ingredients: ['牛奶', '牛奶', '牛奶'] }
+                ]
+            },
+            {
+                date: '9月30日',
+                tips: [],
+                dayTrophy: { name: '冷战', desc: '阿库娅和默特尔没能和好' },
+                orders: [
+                    { customer: '阿库娅', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '亨德利', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '加拉', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            },
+            {
+                date: '10月1日',
+                tips: ['当日有奖杯解锁（源攻略此处为截图，未标注名称）'],
+                orders: [
+                    { customer: '瑞秋', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '卢卡斯', drink: '牛奶', ingredients: ['牛奶', '牛奶', '牛奶'] }
+                ]
+            },
+            {
+                date: '10月2日',
+                tips: ['当日有奖杯解锁（源攻略此处为截图，未标注名称）'],
+                orders: [
+                    { customer: '海德', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '贝里斯 + 露亚', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            },
+            {
+                date: '10月3日',
+                tips: ['ED后还有奖杯解锁（源攻略此处为截图，未标注名称）'],
+                dayTrophy: { name: '工作烦恼', desc: '单次流程完成若尔日不完整的故事线' },
+                orders: [
+                    { customer: '若尔日', drink: '牛奶', ingredients: ['牛奶', '牛奶', '牛奶'] },
+                    { customer: '芙蕾雅', drink: '牛奶', ingredients: ['牛奶', '牛奶', '牛奶'] }
+                ]
+            }
+        ];
+
+        // 三周目 · 回收部分结局
+        const route3Days = [
+            {
+                date: '9月19日',
+                tips: ['本周目回收部分结局分支，每天照常给动态点赞'],
+                orders: [
+                    { customer: '若尔日', drink: '蝶豆花茶', ingredients: ['蝶豆花', '蝶豆花', '蝶豆花'], item: '芙蕾雅的明信片' },
+                    { customer: '卢卡斯', drink: '抹茶', ingredients: ['绿茶', '绿茶', '绿茶'] },
+                    { customer: '黎翁娜', drink: '蝶豆花拿铁', ingredients: ['蝶豆花', '牛奶', '牛奶'], note: '拉花' }
+                ]
+            },
+            {
+                date: '9月20日',
+                tips: [],
+                orders: [
+                    { customer: '卢卡斯', drink: '蜂舞', ingredients: ['咖啡', '蜂蜜', '牛奶'] },
+                    { customer: '默特尔', drink: '也门亚丁奶茶', ingredients: ['红茶', '牛奶', '肉桂'] },
+                    { customer: '阿库娅', drink: '阿库娅的安神茶', ingredients: ['蝶豆花', '薄荷', '薄荷'] }
+                ]
+            },
+            {
+                date: '9月21日',
+                tips: [],
+                orders: [
+                    { customer: '露亚', drink: '胭脂香', ingredients: ['洛神花', '牛奶', '肉桂'] },
+                    { customer: '阿曼达', drink: '蓝色闪电', ingredients: ['蝶豆花', '姜', '姜'] },
+                    { customer: '希尔法', drink: '花房', ingredients: ['蝶豆花', '蜂蜜', '薄荷'] }
+                ]
+            },
+            {
+                date: '9月22日',
+                tips: [],
+                dayTrophy: { name: '网红朋友', desc: '把卢卡斯的联系方式或指尖陀螺交给瑞秋' },
+                orders: [
+                    { customer: '瑞秋', drink: '牛奶蜂蜜绿茶', ingredients: ['绿茶', '牛奶', '蜂蜜'], item: '卢卡斯的联系方式' },
+                    { customer: '黎翁娜', drink: '梦中蓝', ingredients: ['蝶豆花', '牛奶', '蜂蜜'] },
+                    { customer: '加拉', drink: '加拉喝的', ingredients: ['红茶', '牛奶', '姜'] }
+                ]
+            },
+            {
+                date: '9月23日',
+                tips: [],
+                orders: [
+                    { customer: '若尔日', drink: '甜咖啡', ingredients: ['咖啡', '咖啡', '蜂蜜'], item: '打火机' },
+                    { customer: '海德', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '卢卡斯', drink: '肉桂拿铁', ingredients: ['咖啡', '牛奶', '肉桂'] }
+                ]
+            },
+            {
+                date: '9月24日',
+                tips: [],
+                orders: [
+                    { customer: '露亚', drink: '豆儿响叮当', ingredients: ['咖啡', '咖啡', '肉桂'] },
+                    { customer: '海德', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '贝里斯', drink: '巧克力蜂蜜牛奶', ingredients: ['巧克力', '蜂蜜', '牛奶'] }
+                ]
+            },
+            {
+                date: '9月25日',
+                tips: [],
+                orders: [
+                    { customer: '希尔法', drink: '黑色柠檬', ingredients: ['咖啡', '咖啡', '柠檬'] },
+                    { customer: '阿曼达 + 希尔法', drink: '蜂蜜巧克力', ingredients: ['巧克力', '蜂蜜', '蜂蜜'] }
+                ]
+            },
+            {
+                date: '9月26日',
+                tips: [],
+                orders: [
+                    { customer: '加拉', drink: 'STMJ', ingredients: ['牛奶', '姜', '蜂蜜'] },
+                    { customer: '黎翁娜', drink: '俄罗斯红茶', ingredients: ['红茶', '柠檬', '肉桂'] },
+                    { customer: '若尔日', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'], item: '打火机' },
+                    { customer: '卢卡斯', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '若尔日', drink: '忒贾黑罗塞拉', ingredients: ['洛神花', '姜', '蜂蜜'] },
+                    { customer: '卢卡斯 + 黎翁娜', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            },
+            {
+                date: '9月27日',
+                tips: [],
+                orders: [
+                    { customer: '加拉', drink: '加拉的茶', ingredients: ['蝶豆花', '牛奶', '姜'] },
+                    { customer: '海德', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] },
+                    { customer: '露亚', drink: '咳嗽糖浆', ingredients: ['绿茶', '柠檬', '蜂蜜'] }
+                ]
+            },
+            {
+                date: '9月28日',
+                tips: [],
+                orders: [
+                    { customer: '若尔日', drink: '凯马达', ingredients: ['咖啡', '蜂蜜', '柠檬'], item: '打火机' },
+                    { customer: '黎翁娜', drink: '仲夏夜之梦', ingredients: ['红茶', '柠檬', '蜂蜜'] }
+                ]
+            },
+            {
+                date: '9月29日',
+                tips: ['当日有奖杯解锁（源攻略此处为截图，未标注名称）'],
+                orders: [
+                    { customer: '贝里斯', drink: '甜心拿铁', ingredients: ['洛神花', '牛奶', '蜂蜜'] },
+                    { customer: '阿曼达', drink: '柠檬薄荷绿茶', ingredients: ['绿茶', '柠檬', '薄荷'] },
+                    { customer: '希尔法', drink: '299.792.458', ingredients: ['巧克力', '蜂蜜', '姜'] }
+                ]
+            },
+            {
+                date: '9月30日',
+                tips: ['当日有奖杯解锁（源攻略此处为截图，未标注名称）'],
+                orders: [
+                    { customer: '阿库娅', drink: '印度奶茶', ingredients: ['红茶', '姜', '肉桂'] },
+                    { customer: '亨德利', drink: 'STMJ', ingredients: ['牛奶', '姜', '蜂蜜'] },
+                    { customer: '加拉', drink: '忒贾黑罗塞拉', ingredients: ['洛神花', '姜', '蜂蜜'] },
+                    { customer: '若尔日', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            },
+            {
+                date: '10月1日',
+                tips: [],
+                dayTrophy: { name: '自在相处', desc: '在瑞秋需要灵感时，给她调一杯「牛奶蜂蜜绿茶」' },
+                orders: [
+                    { customer: '瑞秋', drink: '牛奶', ingredients: ['牛奶', '牛奶', '牛奶'] },
+                    { customer: '黎翁娜', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            },
+            {
+                date: '10月2日',
+                tips: ['记得看动态，有张CG'],
+                orders: [
+                    { customer: '贝里斯 + 露亚 + 海德 + 加拉', drink: '午夜之后', ingredients: ['巧克力', '蜂蜜', '薄荷'] }
+                ]
+            },
+            {
+                date: '10月3日',
+                tips: ['当日有奖杯解锁（源攻略此处为截图，未标注名称）'],
+                orders: [
+                    { customer: '若尔日', drink: '蝶豆花茶', ingredients: ['蝶豆花', '蝶豆花', '蝶豆花'] },
+                    { customer: '卢卡斯', drink: '蝶豆花拿铁', ingredients: ['蝶豆花', '牛奶', '牛奶'], note: '拉花' },
+                    { customer: '黎翁娜', drink: '蜂蜜咖啡', ingredients: ['咖啡', '蜂蜜', '蜂蜜'] },
+                    { customer: '芙蕾雅', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            }
+        ];
+
+        // 全结局回收（通过主菜单读档）
+        const route4Days = [
+            {
+                date: '读取 9月22日',
+                tips: ['通过主菜单「读取某一天」回收剩余结局，无需重打整个周目', '当日有奖杯解锁（源攻略此处为截图，未标注名称）'],
+                orders: [
+                    { customer: '瑞秋', drink: '甜心拿铁', ingredients: ['洛神花', '牛奶', '蜂蜜'] },
+                    { customer: '黎翁娜', drink: '梦中蓝', ingredients: ['蝶豆花', '牛奶', '蜂蜜'], item: '指尖陀螺' },
+                    { customer: '加拉', drink: '加拉喝的', ingredients: ['红茶', '牛奶', '姜'] }
+                ]
+            },
+            {
+                date: '读取 10月1日',
+                tips: [],
+                dayTrophy: { name: '初恋', desc: '在瑞秋需要灵感时，给她调一杯「甜心拿铁」' },
+                orders: [
+                    { customer: '瑞秋', drink: '牛奶', ingredients: ['牛奶', '牛奶', '牛奶'] },
+                    { customer: '黎翁娜', drink: '蓝莓洛神花馅饼', ingredients: ['洛神花', '蜂蜜', '薄荷'] }
+                ]
+            },
+            {
+                date: '再次读取 10月1日',
+                tips: ['当日有奖杯解锁（源攻略此处为截图，未标注名称）'],
+                orders: [
+                    { customer: '瑞秋', drink: '牛奶', ingredients: ['牛奶', '牛奶', '牛奶'] },
+                    { customer: '黎翁娜', drink: '蓝莓洛神花馅饼', ingredients: ['洛神花', '蜂蜜', '薄荷'] }
+                ]
+            },
+            {
+                date: '读取 10月3日',
+                tips: [
+                    'ED时会获得奖杯',
+                    'ED后芙蕾雅、猫和法赫米（可能是去世的主创）会坐在一起，给他上一杯绿茶拿铁（绿茶+牛奶+牛奶），对话后获得奖杯'
+                ],
+                orders: [
+                    { customer: '若尔日', drink: '蝶豆花茶', ingredients: ['蝶豆花', '蝶豆花', '蝶豆花'] },
+                    { customer: '卢卡斯', drink: '蝶豆花拿铁', ingredients: ['蝶豆花', '牛奶', '牛奶'], note: '拉花' },
+                    { customer: '黎翁娜', drink: '蜂蜜咖啡', ingredients: ['咖啡', '蜂蜜', '蜂蜜'] },
+                    { customer: '芙蕾雅', drink: '意式浓缩', ingredients: ['咖啡', '咖啡', '咖啡'] }
+                ]
+            }
+        ];
+
+        // 通关后杂项（无尽模式 · 自由调饮）
+        const route5Drinks = [
+            { drink: '黑魔法', ingredients: ['咖啡', '薄荷', '蜂蜜'] },
+            { drink: '姜饼咖啡', ingredients: ['咖啡', '姜', '肉桂'] },
+            { drink: '姜味拿铁', ingredients: ['咖啡', '姜', '牛奶'] },
+            { drink: '印尼姜汁咖啡', ingredients: ['咖啡', '咖啡', '姜'] },
+            { drink: '糖与香料', ingredients: ['咖啡', '蜂蜜', '肉桂'] },
+            { drink: '拉茶', ingredients: ['红茶', '红茶', '牛奶'] },
+            { drink: '马拉喀什', ingredients: ['绿茶', '薄荷', '薄荷'] },
+            { drink: '生姜玄米茶', ingredients: ['绿茶', '绿茶', '姜'] },
+            { drink: '绿毛怪格林奇', ingredients: ['绿茶', '姜', '肉桂'] },
+            { drink: '解酒茶', ingredients: ['绿茶', '姜', '柠檬'] },
+            { drink: '苦涩之心', ingredients: ['巧克力', '姜', '肉桂'] },
+            { drink: '辣妹', ingredients: ['巧克力', '牛奶', '肉桂'] },
+            { drink: '蓝色棉花糖', ingredients: ['蝶豆花', '蜂蜜', '牛奶'] },
+            { drink: '比萨普', ingredients: ['洛神花', '姜', '柠檬'] },
+            { drink: '温柔乡', ingredients: ['牛奶', '肉桂', '蜂蜜'] },
+            { drink: '薄荷醇香', ingredients: ['牛奶', '薄荷', '柠檬'] },
+            { drink: '柠檬尼·斯尼科特', ingredients: ['牛奶', '蜂蜜', '柠檬'] },
+            { drink: '银河', ingredients: ['牛奶', '蜂蜜', '薄荷'] }
+        ];
+        const route5Tasks = [
+            { title: '听遍所有歌曲', desc: '打开手机的播放器，依次点击所有歌曲，每一首点完大概等 1、2 秒确认播放了（需先解锁瑞秋全专辑），完成后获得奖杯' },
+            { title: '拉花挂机', desc: '调一杯加牛奶的拿铁进入拉花界面，随便拉一下后开始挂机（注意别让机子进待机），交付饮品后获得奖杯' }
+        ];
+
+        // 路线索引
+        const routes = [
+            { id: 'r1', name: '一周目', sub: '全好结局', type: 'days', days: route1Days, intro: ['每天记得给所有动态点赞并点开查看（有的动态会在当天聊天时更新，左下角有未读提示就都看一眼）'] },
+            { id: 'r2', name: '二周目', sub: '全坏结局', type: 'days', days: route2Days, intro: ['这周目全给错误的饮料；除了一开始芙蕾雅的信强制交付以外，不要交付任何物品'] },
+            { id: 'r3', name: '三周目', sub: '回收部分结局', type: 'days', days: route3Days, intro: ['本周目回收部分结局分支，每天照常给动态点赞'] },
+            { id: 'r4', name: '全结局回收', sub: '读档', type: 'days', days: route4Days, intro: ['通关三周目后，通过主菜单「读取某一天」回收剩余结局'] },
+            { id: 'r5', name: '通关后杂项', sub: '无尽模式', type: 'checklist', intro: ['进无尽模式 → 自由调饮，解锁剩下的特调；如果前面严格按攻略来，直接调下面的就行'] },
+            { id: 'r6', name: '挑战模式', sub: '50杯', type: 'challenge', intro: [] }
+        ];
+        //__MORE_SCRIPT2__
+        // ==================== 求解器逻辑 ====================
+        // 过滤掉牛奶基底
+        const basesWithoutMilk = ingredientData.base.filter(([name]) => name !== '牛奶');
+        const basesWithoutMilkTokyo = ingredientDataTokyo.base;
+
+        // 模式切换
+        let isTokyo = false;
+        const labelsOrig = ['温暖', '清爽', '甜味', '苦味'];
+        const labelsTokyo = ['甜', '酸', '辛辣', '苦'];
+
+        const toggleTokyo = () => {
+            isTokyo = document.getElementById('toggle-tokyo').checked;
+            document.getElementById('label-orig').classList.toggle('active', !isTokyo);
+            document.getElementById('label-tokyo').classList.toggle('active', isTokyo);
+            const labels = isTokyo ? labelsTokyo : labelsOrig;
+            for (let i = 0; i < 4; i++) {
+                document.getElementById('param-label-' + i).textContent = labels[i];
+            }
+            const paramNames = ['warm', 'cool', 'sweet', 'bitter'];
+            for (let i = 0; i < paramNames.length; i++) {
+                document.myForm[paramNames[i]].value = 0;
+                document.getElementById('val-' + i).textContent = '任意';
+            }
+            showDrinks();
+        };
+
+        // 获取当前激活的数据源
+        const getActiveData = () => isTokyo ? ingredientDataTokyo : ingredientData;
+        const getActiveDrinks = () => isTokyo ? drinksTokyo : drinks;
+        const getActiveBases = () => isTokyo ? basesWithoutMilkTokyo : basesWithoutMilk;
+        const getActiveLabels = () => isTokyo ? labelsTokyo : labelsOrig;
+
+        // 按位置查找原料风味值：位置0=base；位置1=otherPrimary优先，否则primary；位置2=otherSecondary优先，否则secondary
+        const lookupIngredient = (data, name, position) => {
+            const positionSources = [
+                [data.base],
+                [data.otherPrimary, data.primary].filter(Boolean),
+                [data.otherSecondary, data.secondary].filter(Boolean)
+            ];
+            const sources = positionSources[position];
+            if (sources) {
+                for (const source of sources) {
+                    const found = source.find(([n]) => n === name);
+                    if (found) return found[1];
+                }
+            }
+            for (let i = 0; i < positionSources.length; i++) {
+                if (i === position) continue;
+                for (const source of positionSources[i]) {
+                    const f = source.find(([n]) => n === name);
+                    if (f) return f[1];
+                }
+            }
+            return [0, 0, 0, 0];
+        };
+
+        // 计算一杯饮品的风味值
+        const computeParams = (data, ingredients) => {
+            const params = [0, 0, 0, 0];
+            for (let idx = 0; idx < ingredients.length; idx++) {
+                const p = lookupIngredient(data, ingredients[idx], idx);
+                for (let j = 0; j < 4; j++) params[j] += p[j];
+            }
+            for (let j = 0; j < 4; j++) params[j] = Math.min(params[j], 8);
+            return params;
+        };
+
+        // 限制值在0-8之间
+        const limitValue = (value) => Math.min(value, 8);
+
+        // 生成混合配方
+        const generateMixRecipes = () => {
+            const data = getActiveData();
+            const [baseNames, baseParams] = splitIngredients(data.base);
+            const [primaryNames, primaryParams] = splitIngredients(data.primary);
+            const [secondaryNames, secondaryParams] = splitIngredients(data.secondary);
+            const bases = getActiveBases();
+            const [nonMilkBaseNames, nonMilkBaseParams] = splitIngredients(bases);
+            const hasOther = data.otherPrimary && data.otherSecondary;
+            const [otherPrimaryNames, otherPrimaryParams] = hasOther
+                ? splitIngredients(data.otherPrimary) : [[], []];
+            const [otherSecondaryNames, otherSecondaryParams] = hasOther
+                ? splitIngredients(data.otherSecondary) : [[], []];
+
+            const combos = [
+                [baseNames, baseParams, primaryNames, primaryParams, secondaryNames, secondaryParams],
+            ];
+            if (hasOther) {
+                combos.push(
+                    [nonMilkBaseNames, nonMilkBaseParams, otherPrimaryNames, otherPrimaryParams, secondaryNames, secondaryParams],
+                    [nonMilkBaseNames, nonMilkBaseParams, primaryNames, primaryParams, otherSecondaryNames, otherSecondaryParams],
+                    [nonMilkBaseNames, nonMilkBaseParams, otherPrimaryNames, otherPrimaryParams, otherSecondaryNames, otherSecondaryParams]
+                );
+            }
+
+            let allNames = [];
+            let allParams = [];
+
+            // 生成所有可能的配方组合
+            for (const [bNames, bParams, pNames, pParams, sNames, sParams] of combos) {
+                for (let i = 0; i < bNames.length; i++) {
+                    for (let j = 0; j < pNames.length; j++) {
+                        for (let k = 0; k < sNames.length; k++) {
+                            allNames.push(`${bNames[i]}，${pNames[j]}，${sNames[k]}`);
+                            allParams.push([
+                                limitValue(bParams[i][0] + pParams[j][0] + sParams[k][0]),
+                                limitValue(bParams[i][1] + pParams[j][1] + sParams[k][1]),
+                                limitValue(bParams[i][2] + pParams[j][2] + sParams[k][2]),
+                                limitValue(bParams[i][3] + pParams[j][3] + sParams[k][3])
+                            ]);
+                        }
+                    }
+                }
+            }
+
+            return [allNames, allParams];
+        };
+
+        // 配方参数条件判断
+        const isRecipeValid = (recipeParams, targetParams) => {
+            for (let i = 0; i < targetParams.length; i++) {
+                const [min, max] = targetParams[i];
+                const value = recipeParams[i];
+                if (value < min || value > max) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        // 渲染风味方块
+        const renderSquares = (params, labels) => {
+            const labelArr = labels || getActiveLabels();
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < params.length; i++) {
+                const row = document.createElement('div');
+                row.classList.add('stat-row');
+                const label = document.createElement('span');
+                label.classList.add('stat-label');
+                label.textContent = labelArr[i];
+                row.appendChild(label);
+                for (let j = 0; j < 8; j++) {
+                    const sq = document.createElement('span');
+                    sq.classList.add('square');
+                    sq.classList.add(j < params[i] ? 'solid' : 'hollow');
+                    const size = 6 + j * 2;
+                    sq.style.width = size + 'px';
+                    sq.style.height = size + 'px';
+                    row.appendChild(sq);
+                }
+                fragment.appendChild(row);
+            }
+            return fragment;
+        };
+
+        // 创建配方卡片
+        const createRecipeCard = (name, params, infoText) => {
+            const card = document.createElement('div');
+            card.classList.add('recipe-card');
+            const nameEl = document.createElement('div');
+            nameEl.classList.add('recipe-name');
+            nameEl.textContent = name;
+            card.appendChild(nameEl);
+            if (infoText) {
+                const info = document.createElement('div');
+                info.classList.add('recipe-info');
+                info.textContent = infoText;
+                card.appendChild(info);
+            }
+            card.appendChild(renderSquares(params));
+            return card;
+        };
+
+        // 搜索判定辅助
+        const matchesKeyword = (name, ingredients, keyword) => {
+            if (!keyword) return true;
+            if (name.toLowerCase().includes(keyword)) return true;
+            if (ingredients && ingredients.some(ing => ing.toLowerCase().includes(keyword))) return true;
+            return false;
+        };
+
+        // 搜索时根据当前显示区域刷新
+        const onSearch = () => {
+            const isTarget = document.getElementById('section-target').style.display !== 'none';
+            if (isTarget) {
+                updateMatch();
+            } else {
+                showDrinks();
+            }
+        };
+
+        // 滑块实时更新匹配配方
+        const updateMatch = () => {
+            const levels = ['任意', '不要', '少一点', '有', '多一点'];
+            const ranges = [[0, 8], [0, 0], [1, 3], [4, 5], [6, 8]];
+            const targetParams = [];
+            const paramNames = ['warm', 'cool', 'sweet', 'bitter'];
+            for (let i = 0; i < paramNames.length; i++) {
+                const val = parseInt(document.myForm[paramNames[i]].value);
+                document.getElementById('val-' + i).textContent = levels[val];
+                targetParams.push(ranges[val]);
+            }
+
+            const keyword = document.getElementById('search-input').value.trim().toLowerCase();
+            const [mixNames, mixParams] = generateMixRecipes();
+            const target = document.getElementById('target');
+            target.innerHTML = '';
+            document.getElementById('section-target').style.display = '';
+            document.getElementById('section-result').style.display = 'none';
+
+            let found = false;
+            for (let i = 0; i < mixNames.length; i++) {
+                if (!isRecipeValid(mixParams[i], targetParams)) continue;
+                if (!matchesKeyword(mixNames[i], null, keyword)) continue;
+                found = true;
+                target.appendChild(createRecipeCard(mixNames[i], mixParams[i]));
+            }
+            if (!found) {
+                const hint = document.createElement('div');
+                hint.classList.add('empty-hint');
+                hint.textContent = '没有合适的配方';
+                target.appendChild(hint);
+            }
+        };
+
+        // 显示所有饮品
+        const showDrinks = () => {
+            const result = document.getElementById('result');
+            result.innerHTML = '';
+            document.getElementById('section-target').style.display = 'none';
+            document.getElementById('section-result').style.display = '';
+            const drinksList = getActiveDrinks();
+            const data = getActiveData();
+            const keyword = document.getElementById('search-input').value.trim().toLowerCase();
+            for (let i = 0; i < drinksList.length; i++) {
+                const d = drinksList[i];
+                if (!matchesKeyword(d.name, d.ingredients, keyword)) continue;
+                const params = computeParams(data, d.ingredients);
+                const name = d.name + (d.type ? (' (' + d.type + ')') : '');
+                result.appendChild(createRecipeCard(name, params, d.ingredients.join('，')));
+            }
+        };
+
+        // ==================== 攻略视图逻辑 ====================
+        const PROGRESS_KEY = 'ct2-progress-v2';
+        let checkedOrders = new Set(JSON.parse(localStorage.getItem(PROGRESS_KEY) || '[]'));
+        // 迁移旧版一周目进度
+        const legacyProgress = JSON.parse(localStorage.getItem('ct2-guide-progress') || '[]');
+        if (legacyProgress.length) {
+            legacyProgress.forEach(id => checkedOrders.add('r1-' + id));
+            localStorage.removeItem('ct2-guide-progress');
+        }
+        let currentRoute = 0;
+        let currentDay = 0;
+
+        const saveProgress = () => {
+            localStorage.setItem(PROGRESS_KEY, JSON.stringify([...checkedOrders]));
+        };
+
+        const switchTab = (tab) => {
+            document.getElementById('tab-guide').classList.toggle('active', tab === 'guide');
+            document.getElementById('tab-solver').classList.toggle('active', tab === 'solver');
+            document.getElementById('view-guide').style.display = tab === 'guide' ? '' : 'none';
+            document.getElementById('view-solver').style.display = tab === 'solver' ? '' : 'none';
+            if (tab === 'solver') showDrinks();
+        };
+
+        // 当前路线的全部可勾选项 id 列表
+        const routeItemIds = (route) => {
+            const ids = [];
+            if (route.type === 'days') {
+                route.days.forEach((d, dIdx) => d.orders.forEach((_, oIdx) => ids.push(`${route.id}-${dIdx}-${oIdx}`)));
+            } else if (route.type === 'checklist') {
+                route5Drinks.forEach((_, i) => ids.push(`${route.id}-d-${i}`));
+                route5Tasks.forEach((_, i) => ids.push(`${route.id}-t-${i}`));
+            }
+            return ids;
+        };
+
+        const isRouteDone = (route) => {
+            const ids = routeItemIds(route);
+            return ids.length > 0 && ids.every(id => checkedOrders.has(id));
+        };
+
+        const updateProgress = () => {
+            const route = routes[currentRoute];
+            const ids = routeItemIds(route);
+            const wrap = document.querySelector('.progress-wrap');
+            if (!ids.length) {
+                wrap.style.display = 'none';
+            } else {
+                wrap.style.display = '';
+                const done = ids.filter(id => checkedOrders.has(id)).length;
+                document.getElementById('progress-fill').style.width = (done / ids.length * 100) + '%';
+                document.getElementById('progress-text').textContent =
+                    `${route.name} ${done} / ${ids.length} ${route.type === 'checklist' ? '项' : '杯'}`;
+            }
+            document.querySelectorAll('.route-pill').forEach((pill, i) => {
+                pill.classList.toggle('done', isRouteDone(routes[i]));
+            });
+        };
+
+        const toggleOrder = (id, checked) => {
+            if (checked) checkedOrders.add(id); else checkedOrders.delete(id);
+            saveProgress();
+            updateProgress();
+        };
+
+        const searchDrink = (name) => {
+            switchTab('solver');
+            if (isTokyo) {
+                document.getElementById('toggle-tokyo').checked = false;
+                toggleTokyo();
+            }
+            document.getElementById('search-input').value = name;
+            showDrinks();
+        };
+
+        // 勾选框 + 卡片通用小部件
+        const makeCheckbox = (id, card) => {
+            const checkLabel = document.createElement('label');
+            checkLabel.className = 'order-check';
+            const cb = document.createElement('input');
+            cb.type = 'checkbox';
+            cb.checked = checkedOrders.has(id);
+            cb.onchange = () => {
+                toggleOrder(id, cb.checked);
+                card.classList.toggle('checked', cb.checked);
+            };
+            checkLabel.appendChild(cb);
+            return checkLabel;
+        };
+
+        const makeSearchBtn = (drinkName) => {
+            const searchBtn = document.createElement('button');
+            searchBtn.className = 'order-search-btn';
+            searchBtn.textContent = '配方库';
+            searchBtn.onclick = () => searchDrink(drinkName);
+            return searchBtn;
+        };
+
+        // 渲染路线导航
+        const renderRouteNav = () => {
+            const nav = document.getElementById('route-nav');
+            nav.innerHTML = '';
+            routes.forEach((r, i) => {
+                const pill = document.createElement('button');
+                pill.className = 'route-pill' + (i === currentRoute ? ' active' : '');
+                pill.innerHTML = `${r.name}<small>${r.sub}</small>`;
+                pill.onclick = () => selectRoute(i);
+                nav.appendChild(pill);
+            });
+        };
+
+        const renderDayNav = () => {
+            const nav = document.getElementById('day-nav');
+            nav.innerHTML = '';
+            const route = routes[currentRoute];
+            route.days.forEach((d, i) => {
+                const pill = document.createElement('button');
+                const done = d.orders.every((_, oIdx) => checkedOrders.has(`${route.id}-${i}-${oIdx}`));
+                pill.className = 'day-pill' + (i === currentDay ? ' active' : '') + (done ? ' done' : '');
+                pill.textContent = d.date;
+                pill.onclick = () => renderDay(i);
+                nav.appendChild(pill);
+            });
+        };
+
+        const selectRoute = (idx) => {
+            currentRoute = idx;
+            currentDay = 0;
+            renderRouteNav();
+            updateProgress();
+            const route = routes[idx];
+            const dayNav = document.getElementById('day-nav');
+            const panel = document.getElementById('day-panel');
+            if (route.type === 'days') {
+                dayNav.style.display = '';
+                renderDay(0);
+            } else if (route.type === 'checklist') {
+                dayNav.style.display = 'none';
+                renderChecklist(route);
+            } else if (route.type === 'challenge') {
+                dayNav.style.display = 'none';
+                renderChallenge();
+            }
+        };
+
+        // 渲染路线提示
+        const renderRouteIntro = (panel, intro) => {
+            for (const tip of intro) {
+                const tipEl = document.createElement('div');
+                tipEl.className = 'day-tip';
+                tipEl.textContent = tip;
+                panel.appendChild(tipEl);
+            }
+        };
+
+        // 渲染某一天
+        const renderDay = (idx) => {
+            currentDay = idx;
+            const route = routes[currentRoute];
+            const day = route.days[idx];
+            renderDayNav();
+            updateProgress();
+
+            const panel = document.getElementById('day-panel');
+            panel.innerHTML = '';
+            renderRouteIntro(panel, route.intro);
+
+            const titleRow = document.createElement('div');
+            titleRow.className = 'day-title-row';
+            titleRow.innerHTML = `<span class="day-title">${day.date}</span><span class="day-count">今日 ${day.orders.length} 杯</span>`;
+            panel.appendChild(titleRow);
+
+            for (const tip of day.tips) {
+                const tipEl = document.createElement('div');
+                tipEl.className = 'day-tip';
+                tipEl.textContent = tip;
+                panel.appendChild(tipEl);
+            }
+            if (day.dayTrophy) {
+                const tEl = document.createElement('div');
+                tEl.className = 'day-trophy-banner';
+                tEl.innerHTML = `<b>★ ${day.dayTrophy.name}</b>　${day.dayTrophy.desc}`;
+                panel.appendChild(tEl);
+            }
+
+            const grid = document.createElement('div');
+            grid.className = 'order-grid';
+            day.orders.forEach((o, oIdx) => {
+                const id = `${route.id}-${idx}-${oIdx}`;
+                const card = document.createElement('div');
+                card.className = 'order-card' + (checkedOrders.has(id) ? ' checked' : '');
+
+                const head = document.createElement('div');
+                head.className = 'order-head';
+                head.appendChild(makeCheckbox(id, card));
+                const cust = document.createElement('span');
+                cust.className = 'customer-tag';
+                cust.textContent = o.customer;
+                head.appendChild(cust);
+                head.appendChild(makeSearchBtn(o.drink));
+                card.appendChild(head);
+
+                const nameEl = document.createElement('div');
+                nameEl.className = 'recipe-name';
+                nameEl.textContent = o.drink;
+                card.appendChild(nameEl);
+
+                const info = document.createElement('div');
+                info.className = 'recipe-info';
+                info.textContent = o.ingredients.join('，');
+                card.appendChild(info);
+
+                // 攻略使用本篇（1、2代）风味体系
+                card.appendChild(renderSquares(computeParams(ingredientData, o.ingredients), labelsOrig));
+
+                if (o.trophy || o.item || o.note) {
+                    const badgeRow = document.createElement('div');
+                    badgeRow.className = 'badge-row';
+                    if (o.trophy) {
+                        const t = document.createElement('span');
+                        t.className = 'trophy-badge';
+                        t.textContent = '★ ' + o.trophy;
+                        badgeRow.appendChild(t);
+                    }
+                    if (o.item) {
+                        const it = document.createElement('span');
+                        it.className = 'item-badge';
+                        it.textContent = '◆ ' + o.item;
+                        badgeRow.appendChild(it);
+                    }
+                    card.appendChild(badgeRow);
+                    if (o.note) {
+                        const note = document.createElement('div');
+                        note.className = 'note-line';
+                        note.textContent = o.note;
+                        card.appendChild(note);
+                    }
+                }
+                grid.appendChild(card);
+            });
+            panel.appendChild(grid);
+        };
+
+        // 渲染通关后杂项清单
+        const renderChecklist = (route) => {
+            const panel = document.getElementById('day-panel');
+            panel.innerHTML = '';
+            renderRouteIntro(panel, route.intro);
+
+            const titleRow = document.createElement('div');
+            titleRow.className = 'day-title-row';
+            titleRow.innerHTML = `<span class="day-title">剩余特调</span><span class="day-count">${route5Drinks.length} 杯 + ${route5Tasks.length} 项</span>`;
+            panel.appendChild(titleRow);
+
+            const grid = document.createElement('div');
+            grid.className = 'order-grid';
+            route5Drinks.forEach((d, i) => {
+                const id = `${route.id}-d-${i}`;
+                const card = document.createElement('div');
+                card.className = 'order-card' + (checkedOrders.has(id) ? ' checked' : '');
+                const head = document.createElement('div');
+                head.className = 'order-head';
+                head.appendChild(makeCheckbox(id, card));
+                const cust = document.createElement('span');
+                cust.className = 'customer-tag';
+                cust.textContent = '自由调饮';
+                head.appendChild(cust);
+                head.appendChild(makeSearchBtn(d.drink));
+                card.appendChild(head);
+                const nameEl = document.createElement('div');
+                nameEl.className = 'recipe-name';
+                nameEl.textContent = d.drink;
+                card.appendChild(nameEl);
+                const info = document.createElement('div');
+                info.className = 'recipe-info';
+                info.textContent = d.ingredients.join('，');
+                card.appendChild(info);
+                card.appendChild(renderSquares(computeParams(ingredientData, d.ingredients), labelsOrig));
+                grid.appendChild(card);
+            });
+            panel.appendChild(grid);
+
+            route5Tasks.forEach((t, i) => {
+                const id = `${route.id}-t-${i}`;
+                const card = document.createElement('div');
+                card.className = 'task-card' + (checkedOrders.has(id) ? ' checked' : '');
+                const head = document.createElement('div');
+                head.className = 'order-head';
+                head.appendChild(makeCheckbox(id, card));
+                const nameEl = document.createElement('div');
+                nameEl.className = 'recipe-name';
+                nameEl.textContent = t.title;
+                head.appendChild(nameEl);
+                card.appendChild(head);
+                const desc = document.createElement('div');
+                desc.className = 'note-line';
+                desc.textContent = t.desc;
+                card.appendChild(desc);
+                panel.appendChild(card);
+            });
+        };
+
+        // 渲染挑战模式说明
+        const renderChallenge = () => {
+            const panel = document.getElementById('day-panel');
+            panel.innerHTML = '';
+
+            const titleRow = document.createElement('div');
+            titleRow.className = 'day-title-row';
+            titleRow.innerHTML = `<span class="day-title">挑战模式</span><span class="day-count">与前作大同小异</span>`;
+            panel.appendChild(titleRow);
+
+            const rules = [
+                ['第 1-10 杯', '客人会点指定材料的饮品，配料请务必按照指定顺序制作；如果只指定了一个配料，那么主料加两份'],
+                ['第 10-17 杯', '客人会点指定名称的饮品，请参考饮品列表（可在「配方求解」页浏览或搜索）'],
+                ['第 18 杯起', '客人会按照口味指定饮品，与前作相比没有变化 —— 用「配方求解」页的四个风味滑块匹配即可']
+            ];
+            for (const [title, desc] of rules) {
+                const card = document.createElement('div');
+                card.className = 'task-card';
+                card.innerHTML = `<div class="recipe-name">${title}</div><div class="note-line">${desc}</div>`;
+                panel.appendChild(card);
+            }
+
+            const tCard = document.createElement('div');
+            tCard.className = 'task-card';
+            tCard.innerHTML = `<div class="recipe-name">挑战模式奖杯</div>`;
+            const badgeRow = document.createElement('div');
+            badgeRow.className = 'badge-row';
+            badgeRow.style.marginTop = '10px';
+            [['见习店长', '连续调对 10 杯'], ['逐渐上手', '连续调对 25 杯'], ['咖啡大师', '连续调对 50 杯']].forEach(([name, desc]) => {
+                const t = document.createElement('span');
+                t.className = 'trophy-badge';
+                t.textContent = `★ ${name} · ${desc}`;
+                badgeRow.appendChild(t);
+            });
+            tCard.appendChild(badgeRow);
+            const btn = document.createElement('button');
+            btn.className = 'challenge-btn';
+            btn.textContent = '打开配方求解器';
+            btn.onclick = () => switchTab('solver');
+            tCard.appendChild(btn);
+            panel.appendChild(tCard);
+        };
+
+        // 页面加载后初始化
+        window.addEventListener('load', () => {
+            selectRoute(0);
+            showDrinks();
+        });
+    </script>
+</body>
+
+</html>
